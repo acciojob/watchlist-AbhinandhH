@@ -15,82 +15,46 @@ public class MovieController {
     @PostMapping("/movies/add-movie")
     public ResponseEntity addMovie(@RequestBody Movie movie){
         String response = movieService.addMovie(movie);
-        if(response == null){
-            return new ResponseEntity("Already added", HttpStatus.IM_USED);
-        }
-        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
-
     @PostMapping("/movies/add-director")
     public ResponseEntity addDirector(@RequestBody Director director){
         String response = movieService.addDirector(director);
-        if(response == null){
-            return new ResponseEntity("Already added", HttpStatus.IM_USED);
-        }
-        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
-
     @PutMapping("/movies/add-movie-director-pair")
-    public ResponseEntity addMovieDirectorPair(@RequestParam("mov") Movie movie, @RequestParam("dir") Director director){
-        String response = movieService.addMovieDirectorPair(movie, director);
-        if(response == null){
-            return new ResponseEntity("Not done", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(response, HttpStatus.ACCEPTED);
+    public ResponseEntity addMovieDirectorPair(@RequestParam("movie") String movieName, @RequestParam("director") String directorName){
+        String response = movieService.addMovieDirectorPair(movieName, directorName);
+        return new ResponseEntity(response, HttpStatus.CREATED);
     }
-
     @GetMapping("/movies/get-movie-by-name/{name}")
     public ResponseEntity getMovieByName(@PathVariable("name") String movieName){
         Movie response = movieService.getMovieByName(movieName);
-        if(response == null){
-            return new ResponseEntity("Not a valid entry", HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
-
     @GetMapping("/movies/get-director-by-name/{name}")
     public ResponseEntity getDirectorByName(@PathVariable("name") String directorName){
         Director response = movieService.getDirectorByName(directorName);
-        if(response == null){
-            return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
-        }
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
-
     @GetMapping("/movies/get-movies-by-director-name/{director}")
     public ResponseEntity getMoviesByDirectorName(@PathVariable("director") String directorName){
-        List response = movieService.getMoviesByDirectorName(directorName);
-        if(response == null){
-            return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
-        }
+        List<String> response = movieService.getMoviesByDirectorName(directorName);
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
-
     @GetMapping("/movies/get-all-movies")
     public ResponseEntity findAllMovies(){
-        List response = movieService.findAllMovies();
-        if(response == null){
-            return new ResponseEntity("The list is empty", HttpStatus.NO_CONTENT);
-        }
+        List<String> response = movieService.findAllMovies();
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
-
     @DeleteMapping("/movies/delete-director-by-name")
-    public ResponseEntity deleteDirectorByName(@RequestParam("dir") String directorName){
+    public ResponseEntity deleteDirectorByName(@RequestParam("director") String directorName){
         String response = movieService.deleteDirectorByName(directorName);
-        if(response == null){
-            return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.GONE);
     }
-
     @DeleteMapping("/movies/delete-all-directors")
     public ResponseEntity deleteAllDirectors(){
         String response = movieService.deleteAllDirectors();
-        if(response == null){
-            return new ResponseEntity("The list is empty", HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity(response, HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.GONE);
     }
-
 }

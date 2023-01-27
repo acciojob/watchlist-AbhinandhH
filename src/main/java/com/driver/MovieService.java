@@ -9,41 +9,31 @@ import java.util.List;
 public class MovieService {
     @Autowired
     MovieRepository movieRepository;
-
     public String addMovie(Movie movie){
-        String response = movieRepository.addMovie(movie);
-        return response;
+        return movieRepository.addMovie(movie);
     }
     public String addDirector(Director director){
-        String response = movieRepository.addDirector(director);
-        return response;
+        return movieRepository.addDirector(director);
     }
-    public String addMovieDirectorPair(Movie movie, Director director){
-        String response = movieRepository.addMovieDirectorPair(movie, director);
-        return response;
+    public String addMovieDirectorPair(String movieName, String directorName){
+        return movieRepository.addMovieDirectorPair(movieName, directorName);
     }
     public Movie getMovieByName(String movieName){
-        Movie response = movieRepository.getMovieByName(movieName);
-        return response;
+        return movieRepository.getMovieByName(movieName);
     }
     public Director getDirectorByName(String directorName){
-        Director response = movieRepository.getDirectorByName(directorName);
-        return response;
+        return movieRepository.getDirectorByName(directorName);
     }
     public List getMoviesByDirectorName(String directorName){
-        List response = movieRepository.getMoviesByDirectorName(directorName);
-        return response;
+        return movieRepository.getMoviesByDirectorName(directorName);
     }
     public List findAllMovies(){
-        List response = movieRepository.findAllMovies();
-        return response;
+        return movieRepository.findAllMovies();
     }
     public String deleteDirectorByName(String directorName){
-        String response = movieRepository.deleteDirectorByName(directorName);
-        return response;
+        return movieRepository.deleteDirectorByName(directorName);
     }
     public String deleteAllDirectors(){
-        String response = movieRepository.deleteAllDirectors();
-        return response;
+        return movieRepository.deleteAllDirectors();
     }
 }
