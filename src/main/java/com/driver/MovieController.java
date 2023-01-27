@@ -25,21 +25,33 @@ public class MovieController {
     @PutMapping("/movies/add-movie-director-pair")
     public ResponseEntity addMovieDirectorPair(@RequestParam("movie") String movieName, @RequestParam("director") String directorName){
         String response = movieService.addMovieDirectorPair(movieName, directorName);
+        if(response == null){
+            return new ResponseEntity("unsuccess", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(response, HttpStatus.CREATED);
     }
     @GetMapping("/movies/get-movie-by-name/{name}")
     public ResponseEntity getMovieByName(@PathVariable("name") String movieName){
         Movie response = movieService.getMovieByName(movieName);
+        if(response == null){
+            return new ResponseEntity("unsuccess", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
     @GetMapping("/movies/get-director-by-name/{name}")
     public ResponseEntity getDirectorByName(@PathVariable("name") String directorName){
         Director response = movieService.getDirectorByName(directorName);
+        if(response == null){
+            return new ResponseEntity("unsuccess", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
     @GetMapping("/movies/get-movies-by-director-name/{director}")
     public ResponseEntity getMoviesByDirectorName(@PathVariable("director") String directorName){
         List<String> response = movieService.getMoviesByDirectorName(directorName);
+        if(response == null){
+            return new ResponseEntity("unsuccess", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(response, HttpStatus.FOUND);
     }
     @GetMapping("/movies/get-all-movies")
@@ -50,6 +62,9 @@ public class MovieController {
     @DeleteMapping("/movies/delete-director-by-name")
     public ResponseEntity deleteDirectorByName(@RequestParam("director") String directorName){
         String response = movieService.deleteDirectorByName(directorName);
+        if(response == null){
+            return new ResponseEntity("unsuccess", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity(response, HttpStatus.GONE);
     }
     @DeleteMapping("/movies/delete-all-directors")

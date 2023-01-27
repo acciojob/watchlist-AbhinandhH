@@ -22,6 +22,9 @@ public class MovieRepository {
         return "success";
     }
     public String addMovieDirectorPair(String movieName, String directorName){
+        if(!movieDB.containsKey(movieName) || !directorDB.containsKey(directorName)){
+            return null;
+        }
         if(!pairDB.containsKey(directorName)){
             List<String> movies = new ArrayList<>();
             movies.add(movieName);
@@ -32,12 +35,21 @@ public class MovieRepository {
         return "success";
     }
     public Movie getMovieByName(String movieName){
+        if(!movieDB.containsKey(movieName)){
+            return null;
+        }
         return movieDB.get(movieName);
     }
     public Director getDirectorByName(String directorName){
+        if(!directorDB.containsKey(directorName)){
+            return null;
+        }
         return directorDB.get(directorName);
     }
     public List getMoviesByDirectorName(String directorName){
+        if(!pairDB.containsKey(directorName)){
+            return null;
+        }
         return pairDB.get(directorName);
     }
     public List findAllMovies(){
@@ -48,16 +60,18 @@ public class MovieRepository {
         return List.of(movies);
     }
     public String deleteDirectorByName(String directorName){
-        if(!pairDB.containsKey(directorName)){
+        if(!directorDB.containsKey(directorName)){
             return null;
         }
-        List<String> listHasToBeDeleted = pairDB.get(directorName);
-        for(String movie : movieDB.keySet()){
-            if(listHasToBeDeleted.contains(movie)){
-                movieDB.remove(movie);
+        if(pairDB.containsKey(directorName)){
+            List<String> listHasToBeDeleted = pairDB.get(directorName);
+            for(String movie : listHasToBeDeleted){
+                if(movieDB.containsKey(movie)){
+                    movieDB.remove(movie);
+                }
             }
+            pairDB.remove(directorName);
         }
-        pairDB.remove(directorName);
         directorDB.remove(directorName);
         return "success";
     }
@@ -67,7 +81,6 @@ public class MovieRepository {
             for(String movie : movieDB.keySet()){
                 if(movies.contains(movie)){
                     movieDB.remove(movie);
-                    break;
                 }
             }
             pairDB.remove(director);
