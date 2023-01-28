@@ -20,17 +20,17 @@ public class MovieRepository {
         return "success";
     }
     public String addMovieDirectorPair(String movieName, String directorName){
-        if(!movieDB.containsKey(movieName) || !directorDB.containsKey(directorName)){
-            return null;
+        if(movieDB.containsKey(movieName) && directorDB.containsKey(directorName)){
+            if(!pairDB.containsKey(directorName)){
+                List<String> movies = new ArrayList<>();
+                movies.add(movieName);
+                pairDB.put(directorName, movies);
+            }else{
+                pairDB.get(directorName).add(movieName);
+            }
+            return "success";
         }
-        if(!pairDB.containsKey(directorName)){
-            List<String> movies = new ArrayList<>();
-            movies.add(movieName);
-            pairDB.put(directorName, movies);
-        }else{
-            pairDB.get(directorName).add(movieName);
-        }
-        return "success";
+        return null;
     }
     public Movie getMovieByName(String movieName){
         if(!movieDB.containsKey(movieName)){
@@ -44,23 +44,16 @@ public class MovieRepository {
         }
         return directorDB.get(directorName);
     }
-    public List getMoviesByDirectorName(String directorName){
+    public List<String> getMoviesByDirectorName(String directorName){
         if(!pairDB.containsKey(directorName)){
             return null;
         }
         return pairDB.get(directorName);
     }
-    public List findAllMovies(){
-        List<String> movies = new ArrayList<>();
-        for(String name : movieDB.keySet()){
-            movies.add(name);
-        }
-        return List.of(movies);
+    public List<String> findAllMovies(){
+        return new ArrayList<>(movieDB.keySet());
     }
     public String deleteDirectorByName(String directorName){
-        if(!directorDB.containsKey(directorName)){
-            return null;
-        }
         if(pairDB.containsKey(directorName)){
             List<String> listHasToBeDeleted = pairDB.get(directorName);
             for(String movie : listHasToBeDeleted){
@@ -69,9 +62,10 @@ public class MovieRepository {
                 }
             }
             pairDB.remove(directorName);
+            directorDB.remove(directorName);
+            return "success";
         }
-        directorDB.remove(directorName);
-        return "success";
+        return null;
     }
     public String deleteAllDirectors(){
         Set<String> mov = new HashSet<>();
@@ -79,14 +73,12 @@ public class MovieRepository {
             for(String movie : pairDB.get(director)){
                 mov.add(movie);
             }
-            pairDB.remove(director);
         }
         for(String movie : mov){
             if(movieDB.containsKey(movie)){
                 movieDB.remove(movie);
             }
         }
-        directorDB.clear();
         return "success";
     }
 }
