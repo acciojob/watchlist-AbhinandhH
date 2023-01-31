@@ -11,24 +11,25 @@ public class MovieRepository {
     Map<String, List<String>> pairDB = new HashMap<>();
     public String addMovie(Movie movie){
         String movieName = movie.getName();
+        if(movieDB.containsKey(movieName)) return null;
         movieDB.put(movieName, movie);
-        return "success";
+        return "Movie added to the list";
     }
     public String addDirector(Director director){
         String directorName = director.getName();
+        if(directorDB.containsKey(directorName)) return null;
         directorDB.put(directorName, director);
-        return "success";
+        return "Director added to the list";
     }
     public String addMovieDirectorPair(String movieName, String directorName){
         if(movieDB.containsKey(movieName) && directorDB.containsKey(directorName)){
             if(!pairDB.containsKey(directorName)){
-                List<String> movies = new ArrayList<>();
-                movies.add(movieName);
-                pairDB.put(directorName, movies);
+                pairDB.put(directorName, new ArrayList<>());
+                pairDB.get(directorName).add(movieName);
             }else{
                 pairDB.get(directorName).add(movieName);
             }
-            return "success";
+            return "Movie - Director pair created";
         }
         return null;
     }
@@ -63,7 +64,7 @@ public class MovieRepository {
             }
             pairDB.remove(directorName);
             directorDB.remove(directorName);
-            return "success";
+            return "Deleted successfully";
         }
         return null;
     }
@@ -78,7 +79,10 @@ public class MovieRepository {
             if(movieDB.containsKey(movie)){
                 movieDB.remove(movie);
             }
+            mov.remove(movie);
         }
-        return "success";
+        pairDB.clear();
+        directorDB.clear();
+        return "Deletion successful";
     }
 }
